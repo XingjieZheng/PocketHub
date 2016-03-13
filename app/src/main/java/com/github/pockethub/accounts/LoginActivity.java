@@ -154,9 +154,6 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
         if (uri != null && uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
             openLoadingDialog();
             String code = uri.getQueryParameter("code");
-            // TODO: 2016/3/8
-            code = "2eb1a3eb3d7af8ad2698";
-            
             new RequestTokenClient(code, clientId, secret, redirectUri)
                     .observable()
                     .subscribeOn(Schedulers.io())

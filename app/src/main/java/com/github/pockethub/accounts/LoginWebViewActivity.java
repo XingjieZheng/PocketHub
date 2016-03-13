@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -43,6 +44,14 @@ public class LoginWebViewActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(android.webkit.WebView view, String url, Bitmap favicon) {
                 dialog.show();
+                Uri uri = Uri.parse(url);
+                if (uri.getScheme().equals(getString(R.string.github_oauth_scheme))
+                        && !TextUtils.isEmpty(uri.getQueryParameter("code"))) {
+                    Intent data = new Intent();
+                    data.setData(uri);
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
             }
 
             @Override
@@ -52,14 +61,14 @@ public class LoginWebViewActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
-                Uri uri = Uri.parse(url);
-                if (uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
-                    Intent data = new Intent();
-                    data.setData(uri);
-                    setResult(RESULT_OK, data);
-                    finish();
-                    return true;
-                }
+//                Uri uri = Uri.parse(url);
+//                if (uri.getScheme().equals(getString(R.string.github_oauth_scheme))) {
+//                    Intent data = new Intent();
+//                    data.setData(uri);
+//                    setResult(RESULT_OK, data);
+//                    finish();
+//                    return true;
+//                }
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
